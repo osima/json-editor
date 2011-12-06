@@ -17,13 +17,12 @@ public class MFrame extends JFrame {
 	private MEditorPanel editorPanel;
 	//private MyConsoleTextEditor editor;
 	
-	
-	
 	public MFrame(){
 		super();
 		
 		editorPanel=new MEditorPanel();
 		toolBar=new MToolBar();
+		editorPanel.addListener(toolBar);
 		toolBar.addListener(new MToolBarListener() {
 			
 			@Override
@@ -34,6 +33,7 @@ public class MFrame extends JFrame {
 					return ;
 				
 				Utils.setText( editorPanel.getActiveFile(), edt.getText() );
+
 				
 			}
 			
@@ -45,7 +45,7 @@ public class MFrame extends JFrame {
 					return ;
 				
 				edt.setText( Utils.pretty( edt.getText() ) );
-				edt.getConsoleTextEditor().getTextEditor().select(0,0);
+				edt.select(0,0);
 				
 			}
 			
@@ -53,7 +53,7 @@ public class MFrame extends JFrame {
 			public void open() {
 				
 				JFileChooser jfc=new JFileChooser();
-				jfc.setCurrentDirectory(new File("."));
+				jfc.setCurrentDirectory(getCurrentDir());
 				jfc.setFileFilter(new FileFilter() {
 					
 					@Override
@@ -74,8 +74,9 @@ public class MFrame extends JFrame {
 				if( r==JFileChooser.APPROVE_OPTION){
 					File f = jfc.getSelectedFile();
 					
-					MyConsoleTextEditor editor = editorPanel.addEditor(f);
-					editor.setText(Utils.getText(f));
+					MyConsoleTextEditor edt = editorPanel.addEditor(f);
+					edt.setText(Utils.getText(f));
+					edt.select(0,0);
 				}
 			}
 			
@@ -96,6 +97,17 @@ public class MFrame extends JFrame {
 		add(editorPanel,BorderLayout.CENTER);
 		
 	}
+	
+	private File currentDir;
+	public File getCurrentDir() {
+		if(currentDir==null)
+			currentDir=new File(".");
+		return currentDir;
+	}
+	public void setCurrentDir(File currentDir) {
+		this.currentDir = currentDir;
+	}
+
 	
 	static public void main(String[] args){
 		MFrame f=new MFrame();

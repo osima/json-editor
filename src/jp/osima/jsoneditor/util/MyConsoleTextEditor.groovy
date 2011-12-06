@@ -9,7 +9,10 @@ import javax.swing.*
 public class MyConsoleTextEditor extends JPanel {
 
 	private def edt
-	public ConsoleTextEditor getConsoleTextEditor(){ return edt }
+	ConsoleTextEditor getConsoleTextEditor(){ return edt }
+	void select(int i,int j){
+		getConsoleTextEditor().getTextEditor().select(i,j)
+	}
 
 	def MyConsoleTextEditor(){
 		edt = new ConsoleTextEditor()
