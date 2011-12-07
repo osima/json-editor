@@ -58,14 +58,28 @@ public class MFrame extends JFrame {
 					
 					@Override
 					public String getDescription() {
-						return "*.json";
+						return "*.json,*.txt";
 					}
 					
 					@Override
 					public boolean accept(File arg0) {
-						if(arg0.isFile() && arg0.getName().endsWith("json") || arg0.isDirectory()){
+
+						//if(arg0.isFile() && arg0.getName().endsWith("json") || arg0.isDirectory()){
+
+						if(arg0.isDirectory()){
 							return true;
 						}
+
+						if(arg0.isFile() ){
+							String fileName = arg0.getName();
+							String[] suffixArray=new String[]{"json","txt"};
+							for(String suffix:suffixArray){
+								if( fileName.endsWith(suffix) ){
+									return true;
+								}
+							}
+						}
+
 						return false;
 					}
 				});
